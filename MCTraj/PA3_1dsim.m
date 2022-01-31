@@ -1,6 +1,7 @@
-function [] = PA3_1dsim(force,nSims)
-
-%UNFINISHED%
+function [] = PA3_1dsim()
+    clear all
+    close all
+    %UNFINISHED%
 
     global C
 
@@ -14,26 +15,41 @@ function [] = PA3_1dsim(force,nSims)
     C.c = 299792458;                    % speed of light
     C.g = 9.80665; %metres (32.1740 ft) per s²
 
-    for n = 1: nSims
-        x(1, :) = zeros(1, nTraj);
-        y(1, :) = zeros(1, nTraj);
-            for c=2:MaxC
+    %nSims = 100;
+    %MaxC = 10000;    
     
-            dvx = Wind(nTraj,WindParas)*dt;
-            Vx = Vx + dvx;
-            dx = Vx * dt;
-    
-            dvy = -g * dt;
-            Vy = Vy + dvy;
-            dy = Vy * dt + g * dt^2 / 2;
-            
-            if max(y(c - 1,:) + dy) <= 0
-                break
-            end
-            
-            x(c,:) = x(c - 1,:) + dx;
-            y(c,:) = y(c - 1,:) + dy;
-        end
-    
-        xl = [xl x(end, :)];
+    nT = 50;
+    x = 0;
+    v = 0;
+    xp = 0;
+    F = 1;
+    m =1;
+    dt = 1;
+    np = 1;
+    t = 0;
+
+    q1 = F/m*dt;
+    q2 = (F/m*dt^2)/2;
+
+    for n = 2: nT
+        t(n) = t(n-1)+dt;
+        v(:,n) = v(:,n-1) + q1;
+        x(:,n) = x(:,n-1) + v(:,n-1)*dt + q2;
+        r = rand(1)/10 < 0.05;
+        %if r < 0.05 % TRIED THIS BUT DON'T KNOW WHY IT DID NOT WORK
+        v(r,n) = 0;
+        %end
+        vdx = (x(:,n)-x(:,n-1)) / dt;
+
+        subplot(3,1,1),plot(t,v(1,:)); hold on
+        xlabel('time');
+        ylabel('velocity');
+        hold off
+        subplot(3,1,2),plot(t,x(1,:)); hold on
+        xlabel('time');
+        ylabel('position');
+        hold off
+        subplot(3,1,3),plot(t,vdx); hold on
+        grid on; % NO IDEA WHY I DID NOT GET A GRAPH
+        
     end
